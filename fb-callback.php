@@ -1,10 +1,5 @@
-<?php $fb = new Facebook\Facebook([
-  'app_id' => '{app-id}', // Replace {app-id} with your app id
-  'app_secret' => '{app-secret}',
-  'default_graph_version' => 'v2.2',
-  ]);
-
-$helper = $fb->getRedirectLoginHelper();
+<?php
+require_once 'fb-config.php';
 
 try {
   $accessToken = $helper->getAccessToken();
@@ -45,7 +40,7 @@ echo '<h3>Metadata</h3>';
 var_dump($tokenMetadata);
 
 // Validation (these will throw FacebookSDKException's when they fail)
-$tokenMetadata->validateAppId('{app-id}'); // Replace {app-id} with your app id
+$tokenMetadata->validateAppId('362540437809242'); // my facebook app id
 // If you know the user ID this access token belongs to, you can validate it here
 //$tokenMetadata->validateUserId('123');
 $tokenMetadata->validateExpiration();
@@ -67,6 +62,6 @@ $_SESSION['fb_access_token'] = (string) $accessToken;
 
 // User is logged in with a long-lived access token.
 // You can redirect them to a members-only page.
-//header('Location:members.php');
+header('Location:members.php');
 
 ?>
