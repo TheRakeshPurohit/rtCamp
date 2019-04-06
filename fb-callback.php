@@ -73,7 +73,7 @@ $_SESSION['fb_access_token'] = (string) $accessToken;
 
 try {
   // Returns a `Facebook\FacebookResponse` object
-  $response = $fb->get('/me?fields=id,name', $accessToken);
+  $response = $fb->get('/me?fields=id,name,link,birthday,location,hometown', $accessToken);
 } catch(Facebook\Exceptions\FacebookResponseException $e) {
   echo 'Graph returned an error: ' . $e->getMessage();
   exit;
@@ -84,9 +84,15 @@ try {
 
 $user = $response->getGraphUser();
 
-echo 'Name: ' . $user['name'];
+echo '<br/> ID: ' . $user['id']; 
+echo '<br/> Name: ' . $user['name'];
+echo '<br/> Link: ' . $user['link'];
+echo '<br/> Birthday: ' . $user['birthday'];
+echo '<br/> Location: ' . $user['location'];
+echo '<br/> Home Town: ' . $user['hometown'];
+
 
 // User is logged in with a long-lived access token.
 // You can redirect them to a members-only page.
-//header('Location: https://example.com/members.php');
+//header('Location: members.php');
 ?>
