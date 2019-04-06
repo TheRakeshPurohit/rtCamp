@@ -1,5 +1,16 @@
 <?php
-require_once 'fb-config.php';
+require_once 'lib\Facebook\autoload.php';
+if(!session_id()) {
+  session_start();
+}
+
+$fb = new Facebook\Facebook([
+  'app_id' => '362540437809242', // My Facebook App ID
+  'app_secret' => '538cd04f971479ff14dc409df2fbcf3b',
+  'default_graph_version' => 'v3.2',
+  ]);
+
+$helper = $fb->getRedirectLoginHelper();
 
 try {
   $accessToken = $helper->getAccessToken();
@@ -40,7 +51,7 @@ echo '<h3>Metadata</h3>';
 var_dump($tokenMetadata);
 
 // Validation (these will throw FacebookSDKException's when they fail)
-$tokenMetadata->validateAppId('362540437809242'); // my facebook app id
+$tokenMetadata->validateAppId('362540437809242'); // My Facebook App ID
 // If you know the user ID this access token belongs to, you can validate it here
 //$tokenMetadata->validateUserId('123');
 $tokenMetadata->validateExpiration();
@@ -60,8 +71,22 @@ if (! $accessToken->isLongLived()) {
 
 $_SESSION['fb_access_token'] = (string) $accessToken;
 
+try {
+  // Returns a `Facebook\FacebookResponse` object
+  $response = $fb->get('/me?fields=id,name', $accessToken);
+} catch(Facebook\Exceptions\FacebookResponseException $e) {
+  echo 'Graph returned an error: ' . $e->getMessage();
+  exit;
+} catch(Facebook\Exceptions\FacebookSDKException $e) {
+  echo 'Facebook SDK returned an error: ' . $e->getMessage();
+  exit;
+}
+
+$user = $response->getGraphUser();
+
+echo 'Name: ' . $user['name'];
+
 // User is logged in with a long-lived access token.
 // You can redirect them to a members-only page.
-header('Location:members.php');
-
+//header('Location: https://example.com/members.php');
 ?>
