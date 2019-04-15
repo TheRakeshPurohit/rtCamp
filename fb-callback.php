@@ -1,14 +1,20 @@
 <?php
-
 if(!session_id()) {
   session_start();
 }
-
 require_once 'lib\Facebook\autoload.php';
 
+if(isset($_SESSION['fb_access_token'])){
+  // Get access token from session
+  $accessToken = $_SESSION['fb_access_token'];
+  //header('location:member.php');
+}else{
+  $appId='362540437809242';
+  $appSecret='538cd04f971479ff14dc409df2fbcf3b';
+
 $fb = new Facebook\Facebook([
-  'app_id' => '362540437809242', // My Facebook App ID
-  'app_secret' => '538cd04f971479ff14dc409df2fbcf3b',
+  'app_id' => $appId, // variable with My Facebook App ID
+  'app_secret' => $appSecret,
   'default_graph_version' => 'v3.2',
   ]);
 
@@ -27,6 +33,7 @@ try {
 }
 
 if (! isset($accessToken)) {
+  
   if ($helper->getError()) {
     header('HTTP/1.0 401 Unauthorized');
     echo "Error: " . $helper->getError() . "\n";
@@ -42,7 +49,7 @@ if (! isset($accessToken)) {
 
 // Logged in
 //echo '<h3>Access Token</h3>';
-//var_dump($accessToken->getValue());
+//($accessToken->getValue());
 
 // The OAuth 2.0 client handler helps us manage access tokens
 $oAuth2Client = $fb->getOAuth2Client();
@@ -84,13 +91,12 @@ try {
   exit;
 }
 
-$user = $response->getGraphUser();
+$_SESSION['user'] = $response->getGraphUser();
 
-echo '<br/> User ID: ' . $user['id']; 
-echo '<br/> Welcome,' . $user['name'];
-
-
-// User is logged in with a long-lived access token.
-// You can redirect them to a members-only page.
-//header('Location: members.php');
+if(isset($_SESSION['user']) && isset($_SESSION['fb_access_token'])){
+  header('Location:member.php');
+}else{
+  header('Location:index.php');
+}
+}
 ?>
