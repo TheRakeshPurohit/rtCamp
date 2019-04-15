@@ -1,15 +1,30 @@
 <?php
-if(!session_id()) {
-  session_start();
-}
-require_once 'lib\Facebook\autoload.php';
+require_once 'appconfig.php';
 
 if(isset($_SESSION['fb_access_token'])){
   // Get access token from session
   $accessToken = $_SESSION['fb_access_token'];
-  $user = (array) $_SESSION['user'];
+
+  $fb = new Facebook\Facebook([
+    'app_id' => $appId,
+    'app_secret' => $appSecret,
+    'default_graph_version' => 'v3.2',
+    ]);
+
+  try {
+    // Returns a `Facebook\FacebookResponse` object
+    $response = $fb->get('/me?fields=id,name', $accessToken);
+  } catch(Facebook\Exceptions\FacebookResponseException $e) {
+    echo 'Graph returned an error: ' . $e->getMessage();
+    exit;
+  } catch(Facebook\Exceptions\FacebookSDKException $e) {
+    echo 'Facebook SDK returned an error: ' . $e->getMessage();
+    exit;
+  }
   
-echo '<br/> User ID: ' . $user['id']; 
+  $user = $response->getGraphUser();
+  
+//echo '<br/> User ID: ' . $user['id']; 
 echo '<br/> Welcome , ' . $user['name'];
 echo '<a href=""  >Logout</a>';
 
@@ -66,17 +81,19 @@ echo "<h2>".$album_name."</h2>";
 // Render all photos   
 if (is_array($fbPhotoData) || is_object($fbPhotoData))
 {  
-foreach($fbPhotoData as $data){
-    $imageData = end($data['images']);
-    $imgSource = isset($imageData['source'])?$imageData['source']:'';
-    $name = isset($data['name'])?$data['name']:'';
+    foreach($fbPhotoData as $data)
+    {
+        $imageData = end($data['images']);
+        $imgSource = isset($imageData['source'])?$imageData['source']:'';
+        $name = isset($data['name'])?$data['name']:'';
 
-    echo "<div class='item'>";
-    echo "<img src='{$imgSource}' alt=''>";
- echo "<p>{$name}</p>";
-    echo "</div>";
+        echo "<div class='item'>";
+        echo "<img src='{$imgSource}' alt=''>";
+        echo "<p>{$name}</p>";
+        echo "</div>";
+    }
 }
-}
+
 }
 echo'</div>';
 

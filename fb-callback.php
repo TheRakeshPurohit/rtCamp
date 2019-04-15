@@ -1,24 +1,14 @@
 <?php
-if(!session_id()) {
-  session_start();
-}
-require_once 'lib\Facebook\autoload.php';
 
-if(isset($_SESSION['fb_access_token'])){
-  // Get access token from session
-  $accessToken = $_SESSION['fb_access_token'];
-  //header('location:member.php');
-}else{
-  $appId='362540437809242';
-  $appSecret='538cd04f971479ff14dc409df2fbcf3b';
+require_once 'appconfig.php';
 
-$fb = new Facebook\Facebook([
-  'app_id' => $appId, // variable with My Facebook App ID
-  'app_secret' => $appSecret,
-  'default_graph_version' => 'v3.2',
-  ]);
-
-$helper = $fb->getRedirectLoginHelper();
+    $fb = new Facebook\Facebook([
+      'app_id' => $appId,
+      'app_secret' => $appSecret,
+      'default_graph_version' => 'v3.2',
+      ]);
+    
+    $helper = $fb->getRedirectLoginHelper();
 
 try {
   $accessToken = $helper->getAccessToken();
@@ -33,7 +23,6 @@ try {
 }
 
 if (! isset($accessToken)) {
-  
   if ($helper->getError()) {
     header('HTTP/1.0 401 Unauthorized');
     echo "Error: " . $helper->getError() . "\n";
@@ -48,19 +37,19 @@ if (! isset($accessToken)) {
 }
 
 // Logged in
-//echo '<h3>Access Token</h3>';
-//($accessToken->getValue());
+echo '<h3>Access Token</h3>';
+var_dump($accessToken->getValue());
 
 // The OAuth 2.0 client handler helps us manage access tokens
 $oAuth2Client = $fb->getOAuth2Client();
 
 // Get the access token metadata from /debug_token
 $tokenMetadata = $oAuth2Client->debugToken($accessToken);
-echo '<h3>Facebook Photos Challenge</h3>';
-//var_dump($tokenMetadata);
+echo '<h3>Metadata</h3>';
+var_dump($tokenMetadata);
 
 // Validation (these will throw FacebookSDKException's when they fail)
-$tokenMetadata->validateAppId('362540437809242'); // My Facebook App ID
+$tokenMetadata->validateAppId($appId); // Replace {app-id} with your app id
 // If you know the user ID this access token belongs to, you can validate it here
 //$tokenMetadata->validateUserId('123');
 $tokenMetadata->validateExpiration();
@@ -80,23 +69,5 @@ if (! $accessToken->isLongLived()) {
 
 $_SESSION['fb_access_token'] = (string) $accessToken;
 
-try {
-  // Returns a `Facebook\FacebookResponse` object
-  $response = $fb->get('/me?fields=id,name', $accessToken);
-} catch(Facebook\Exceptions\FacebookResponseException $e) {
-  echo 'Graph returned an error: ' . $e->getMessage();
-  exit;
-} catch(Facebook\Exceptions\FacebookSDKException $e) {
-  echo 'Facebook SDK returned an error: ' . $e->getMessage();
-  exit;
-}
-
-$_SESSION['user'] = $response->getGraphUser();
-
-if(isset($_SESSION['user']) && isset($_SESSION['fb_access_token'])){
-  header('Location:member.php');
-}else{
-  header('Location:index.php');
-}
-}
+  header("Location:member.php");
 ?>

@@ -28,7 +28,7 @@ git clone https://github.com/TheRakeshPurohit/rtCamp.git
 
 ```
 path to config file
- ===> rtCamp/fb-callback.php
+ ===> rtCamp/appconfig.php
  ```
  ### Values To Be Change To Get The Application Running
    **Only To Be Changed When Not To Be Deployed Locally.**
@@ -37,8 +37,8 @@ path to config file
  ```
  **Values To Be Configured To Use Your Own App.**
 ```
-    $config['consumerKey'] = 'Enter Your Key Here';
-    $config['consumerSecret'] = 'Enter Your Consumer Secret Here';
+    $appId = 'Enter Your Key Here';
+    $appSecret = 'Enter Your Consumer Secret Here';
  ```
 
  ### To Create Facebook App
