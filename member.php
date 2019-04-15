@@ -50,8 +50,8 @@ foreach($fbAlbumData as $data){
 }
 //}
 
-$album_id = isset($_GET['album_id'])?$_GET['album_id']:header("Location: fb-callback.php");
-$album_name = isset($_GET['album_name'])?$_GET['album_name']:header("Location: fb-callback.php");
+$album_id = isset($_GET['album_id'])?$_GET['album_id']:header('Location: fb-callback.php');
+$album_name = isset($_GET['album_name'])?$_GET['album_name']:header('Location: fb-callback.php');
 
 // Get photos of Facebook page album using Facebook Graph API
 $graphPhoLink = "https://graph.facebook.com/v3.2/{$album_id}/photos?fields=source,images,name&access_token={$accessToken}";
