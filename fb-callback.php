@@ -40,7 +40,7 @@ if (! isset($accessToken)) {
 
 // Logged in
 echo '<h3>Access Token</h3>';
-var_dump($accessToken->getValue());
+//var_dump($accessToken->getValue());
 
 // The OAuth 2.0 client handler helps us manage access tokens
 $oAuth2Client = $fb->getOAuth2Client();
@@ -48,7 +48,7 @@ $oAuth2Client = $fb->getOAuth2Client();
 // Get the access token metadata from /debug_token
 $tokenMetadata = $oAuth2Client->debugToken($accessToken);
 echo '<h3>Metadata</h3>';
-var_dump($tokenMetadata);
+//var_dump($tokenMetadata);
 
 // Validation (these will throw FacebookSDKException's when they fail)
 $tokenMetadata->validateAppId('362540437809242'); // My Facebook App ID
@@ -85,7 +85,7 @@ try {
 $user = $response->getGraphUser();
 
 echo '<br/> ID: ' . $user['id']; 
-echo '<br/> Name: ' . $user['name'];
+echo '<br/> Welcome,' . $user['name'];
 echo '<br/> Link: ' . $user['link'];
 echo '<br/> Birthday: ' . $user['birthday'];
 echo '<br/> Location: ' . $user['location'];
