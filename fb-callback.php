@@ -39,7 +39,7 @@ if (! isset($accessToken)) {
 }
 
 // Logged in
-echo '<h3>Access Token</h3>';
+//echo '<h3>Access Token</h3>';
 //var_dump($accessToken->getValue());
 
 // The OAuth 2.0 client handler helps us manage access tokens
@@ -47,7 +47,7 @@ $oAuth2Client = $fb->getOAuth2Client();
 
 // Get the access token metadata from /debug_token
 $tokenMetadata = $oAuth2Client->debugToken($accessToken);
-echo '<h3>Metadata</h3>';
+echo '<h3>FaFacebook Photos Challenge</h3>';
 //var_dump($tokenMetadata);
 
 // Validation (these will throw FacebookSDKException's when they fail)
@@ -73,7 +73,7 @@ $_SESSION['fb_access_token'] = (string) $accessToken;
 
 try {
   // Returns a `Facebook\FacebookResponse` object
-  $response = $fb->get('/me?fields=id,name,link,birthday,location,hometown', $accessToken);
+  $response = $fb->get('/me?fields=id,name', $accessToken);
 } catch(Facebook\Exceptions\FacebookResponseException $e) {
   echo 'Graph returned an error: ' . $e->getMessage();
   exit;
@@ -84,12 +84,8 @@ try {
 
 $user = $response->getGraphUser();
 
-echo '<br/> ID: ' . $user['id']; 
+echo '<br/> User ID: ' . $user['id']; 
 echo '<br/> Welcome,' . $user['name'];
-echo '<br/> Link: ' . $user['link'];
-echo '<br/> Birthday: ' . $user['birthday'];
-echo '<br/> Location: ' . $user['location'];
-echo '<br/> Home Town: ' . $user['hometown'];
 
 
 // User is logged in with a long-lived access token.

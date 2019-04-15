@@ -16,5 +16,6 @@ $helper = $fb->getRedirectLoginHelper();
 $permissions = ['email']; // Optional permissions
 $loginUrl = $helper->getLoginUrl('https://localhost/rtCamp/fb-callback.php', $permissions);
 
-echo '<a href="' . htmlspecialchars($loginUrl) . '"><img alt="Login With Facebook" src="images/fb_icon.png"></a>';
+echo "<h3> Connect Clicking Below Facebook Icon Using Your Facebook Account.<h3>";
+echo '<a href="' .htmlspecialchars($loginUrl).'"><img alt="Login With Facebook" src="images/fb_icon.png"></a>';
 ?>
