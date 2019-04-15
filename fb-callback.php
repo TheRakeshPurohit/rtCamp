@@ -1,8 +1,10 @@
 <?php
-require_once 'lib\Facebook\autoload.php';
+
 if(!session_id()) {
   session_start();
 }
+
+require_once 'lib\Facebook\autoload.php';
 
 $fb = new Facebook\Facebook([
   'app_id' => '362540437809242', // My Facebook App ID
@@ -47,7 +49,7 @@ $oAuth2Client = $fb->getOAuth2Client();
 
 // Get the access token metadata from /debug_token
 $tokenMetadata = $oAuth2Client->debugToken($accessToken);
-echo '<h3>FaFacebook Photos Challenge</h3>';
+echo '<h3>Facebook Photos Challenge</h3>';
 //var_dump($tokenMetadata);
 
 // Validation (these will throw FacebookSDKException's when they fail)
