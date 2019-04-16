@@ -3,30 +3,23 @@ require_once 'appconfig.php';
 
 if(isset($_SESSION['fb_access_token'])){
   // Get access token from session
-  $accessToken = $_SESSION['fb_access_token'];
-
-  $fb = new Facebook\Facebook([
+  $accessToken = (string) $_SESSION['fb_access_token'];
+/* 
+$fb = new Facebook\Facebook([
     'app_id' => $appId,
     'app_secret' => $appSecret,
     'default_graph_version' => 'v3.2',
     ]);
-
-  try {
-    // Returns a `Facebook\FacebookResponse` object
-    $response = $fb->get('/me?fields=id,name', $accessToken);
-  } catch(Facebook\Exceptions\FacebookResponseException $e) {
-    echo 'Graph returned an error: ' . $e->getMessage();
-    exit;
-  } catch(Facebook\Exceptions\FacebookSDKException $e) {
-    echo 'Facebook SDK returned an error: ' . $e->getMessage();
-    exit;
-  }
   
-  $user = $response->getGraphUser();
+    $helper = $fb->getRedirectLoginHelper();
+ 
+if(isset($_GET['state'])){
+    $helper->getPersistentDataHandler()->set('state',$_GET['state']);
+}*/
+    echo $accessToken;
   
-//echo '<br/> User ID: ' . $user['id']; 
-echo '<br/> Welcome , ' . $user['name'];
-echo '<a href=""  >Logout</a>';
+  echo 'Welcome, ' . $user['name'];
+  echo '<a href="logout.php"  >Logout</a>';
 
 // Get photo albums of Facebook page using Facebook Graph API
 $fields = "id,name,description,link,cover_photo,count";
@@ -94,23 +87,24 @@ if (is_array($fbPhotoData) || is_object($fbPhotoData))
     }
 }
 
-}
+
 echo'</div>';
 
 echo "<div class='slideshow-container'>";
 
 // Render all photos 
-if (is_array($fbPhotoData) || is_object($fbPhotoData))
-{   
-foreach($fbPhotoData as $data){
-    $imageData = end($data['images']);
-    $imgSource = isset($imageData['source'])?$imageData['source']:'';
-    $name = isset($data['name'])?$data['name']:'';
+    if (is_array($fbPhotoData) || is_object($fbPhotoData))
+    {   
+        foreach($fbPhotoData as $data){
+        $imageData = end($data['images']);
+        $imgSource = isset($imageData['source'])?$imageData['source']:'';
+        $name = isset($data['name'])?$data['name']:'';
 
-echo "<div class='mySlides fade'>";
-echo "<img src='{$imgSource}' alt='' style='width:100%'>";
-echo "<div class='text'>{$name}</div>";
-echo "</div>";
+        echo "<div class='mySlides fade'>";
+        echo "<img src='{$imgSource}' alt='' style='width:100%'>";
+        echo "<div class='text'>{$name}</div>";
+        echo "</div>";
+    }
 }
 }
 ?>
@@ -223,8 +217,8 @@ img {vertical-align: middle;}
   .text {font-size: 11px}
 }
 </style>
-
-}else{
+<?php
+/*}else{
     header('location:index.php');
-}
+}*/
 ?>
