@@ -85,7 +85,7 @@ class GraphNode extends Collection
     {
         $items = $this->asArray();
 
-        return array_map(function ($v) {
+        return array_map(function($v) {
             if ($v instanceof \DateTime) {
                 return $v->format(\DateTime::ISO8601);
             }

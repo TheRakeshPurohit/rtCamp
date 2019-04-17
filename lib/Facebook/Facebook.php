@@ -593,7 +593,7 @@ class Facebook
         $graphVersion = $graphVersion ?: $this->defaultGraphVersion;
 
         $uploader = new FacebookResumableUploader($this->app, $this->client, $accessToken, $graphVersion);
-        $endpoint = '/'.$target.'/videos';
+        $endpoint = '/' . $target . '/videos';
         $file = $this->videoToUpload($pathToFile);
         $chunk = $uploader->start($endpoint, $file);
 
@@ -602,8 +602,8 @@ class Facebook
         } while (!$chunk->isLastChunk());
 
         return [
-          'video_id' => $chunk->getVideoId(),
-          'success' => $uploader->finish($endpoint, $chunk->getUploadSessionId(), $metadata),
+            'video_id' => $chunk->getVideoId(),
+            'success' => $uploader->finish($endpoint, $chunk->getUploadSessionId(), $metadata),
         ];
     }
 

@@ -1,41 +1,41 @@
 <?php
 if(!session_id()) {
-  session_start();
+    session_start();
 }
 require_once 'appconfig.php';
 
 $fb = new Facebook\Facebook([
-  'app_id' => $appId, // variable with My Facebook App ID
-  'app_secret' => $appSecret,
-  'default_graph_version' => 'v3.2',
-  ]);
+    'app_id' => $appId, // variable with My Facebook App ID
+    'app_secret' => $appSecret,
+    'default_graph_version' => 'v3.2',
+    ]);
 $helper = $fb->getRedirectLoginHelper();
 if(isset($_GET['state'])){
-  $helper->getPersistentDataHandler()->set('state',$_GET['state']);
+    $helper->getPersistentDataHandler()->set('state',$_GET['state']);
 }
 try {
-  $accessToken = $helper->getAccessToken();
+    $accessToken = $helper->getAccessToken();
 } catch(Facebook\Exceptions\FacebookResponseException $e) {
-  // When Graph returns an error
-  echo 'Graph returned an error: ' . $e->getMessage();
-  exit;
+    // When Graph returns an error
+    echo 'Graph returned an error: ' . $e->getMessage();
+    exit;
 } catch(Facebook\Exceptions\FacebookSDKException $e) {
-  // When validation fails or other local issues
-  echo 'Facebook SDK returned an error: ' . $e->getMessage();
-  exit;
+    // When validation fails or other local issues
+    echo 'Facebook SDK returned an error: ' . $e->getMessage();
+    exit;
 }
 if (! isset($accessToken)) {
-  if ($helper->getError()) {
+    if ($helper->getError()) {
     header('HTTP/1.0 401 Unauthorized');
     echo "Error: " . $helper->getError() . "\n";
     echo "Error Code: " . $helper->getErrorCode() . "\n";
     echo "Error Reason: " . $helper->getErrorReason() . "\n";
     echo "Error Description: " . $helper->getErrorDescription() . "\n";
-  } else {
+    } else {
     header('HTTP/1.0 400 Bad Request');
     echo 'Bad request';
-  }
-  exit;
+    }
+    exit;
 }
 // Logged in
 echo '<h3>Access Token</h3>';
@@ -52,27 +52,27 @@ $tokenMetadata->validateAppId($appId); // My Facebook App ID
 //$tokenMetadata->validateUserId('123');
 $tokenMetadata->validateExpiration();
 if (! $accessToken->isLongLived()) {
-  // Exchanges a short-lived access token for a long-lived one
-  try {
+    // Exchanges a short-lived access token for a long-lived one
+    try {
     $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
-  } catch (Facebook\Exceptions\FacebookSDKException $e) {
+    } catch (Facebook\Exceptions\FacebookSDKException $e) {
     echo "<p>Error getting long-lived access token: " . $e->getMessage() . "</p>\n\n";
     exit;
-  }
-  echo '<h3>Long-lived</h3>';
-  var_dump($accessToken->getValue());
+    }
+    echo '<h3>Long-lived</h3>';
+    var_dump($accessToken->getValue());
 }
 
 //$_SESSION['fb_access_token'] = (string) $accessToken;
 try {
-  // Returns a `Facebook\FacebookResponse` object
-  $response = $fb->get('/me?fields=id,name', $accessToken);
+    // Returns a `Facebook\FacebookResponse` object
+    $response = $fb->get('/me?fields=id,name', $accessToken);
 } catch(Facebook\Exceptions\FacebookResponseException $e) {
-  echo 'Graph returned an error: ' . $e->getMessage();
-  exit;
+    echo 'Graph returned an error: ' . $e->getMessage();
+    exit;
 } catch(Facebook\Exceptions\FacebookSDKException $e) {
-  echo 'Facebook SDK returned an error: ' . $e->getMessage();
-  exit;
+    echo 'Facebook SDK returned an error: ' . $e->getMessage();
+    exit;
 }
 $user = $response->getGraphUser();
 
@@ -117,8 +117,8 @@ foreach($fbAlbumData as $data){
 }
 
 if(isset($_GET['album_id']) && isset($_GET['album_name'])){
-  $album_id = $_GET['album_id'];
-  $album_name = $_GET['album_name']; //isset($_GET['album_name'])?:header('Location: fb-callback.php');
+    $album_id = $_GET['album_id'];
+    $album_name = $_GET['album_name']; //isset($_GET['album_name'])?:header('Location: fb-callback.php');
 
 // Get photos of Facebook page album using Facebook Graph API
 $graphPhoLink = "https://graph.facebook.com/v3.2/{$album_id}/photos?fields=source,images,name&access_token={$accessToken}";
@@ -128,23 +128,23 @@ $fbPhotoObj = json_decode($jsonData, true, 512, JSON_BIGINT_AS_STRING);
 // Facebook photos content
 $fbPhotoData = $fbPhotoObj['data'];
 
-echo "<h2>".$album_name."</h2>";
+echo "<h2>" . $album_name . "</h2>";
 
 echo "<div class='slideshow-container'>";
 
 // Render all photos 
     if (is_array($fbPhotoData) || is_object($fbPhotoData))
     {   
-        foreach($fbPhotoData as $data){
+        foreach ($fbPhotoData as $data) {
         $imageData = end($data['images']);
-        $imgSource = isset($imageData['source'])?$imageData['source']:'';
-        $name = isset($data['name'])?$data['name']:'';
+        $imgSource = isset($imageData['source']) ? $imageData['source'] : '';
+        $name = isset($data['name']) ? $data['name'] : '';
 
         echo "<div class='mySlides fade'>";
         echo "<img src='{$imgSource}' alt='' style='width:100%'>";
         echo "<div class='text'>{$name}</div>";
         echo "</div>";
-      }
+        }
     }
 }
 ?>

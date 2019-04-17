@@ -128,7 +128,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function asArray()
     {
-        return array_map(function ($value) {
+        return array_map(function($value) {
             return $value instanceof Collection ? $value->asArray() : $value;
         }, $this->items);
     }

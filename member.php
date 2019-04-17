@@ -2,8 +2,8 @@
 require_once 'appconfig.php';
 
 if(isset($_SESSION['fb_access_token'])){
-  // Get access token from session
-  $accessToken = (string) $_SESSION['fb_access_token'];
+    // Get access token from session
+    $accessToken = (string) $_SESSION['fb_access_token'];
 /* 
 $fb = new Facebook\Facebook([
     'app_id' => $appId,
@@ -18,8 +18,8 @@ if(isset($_GET['state'])){
 }*/
     echo $accessToken;
   
-  echo 'Welcome, ' . $user['name'];
-  echo '<a href="logout.php"  >Logout</a>';
+    echo 'Welcome, ' . $user['name'];
+    echo '<a href="logout.php"  >Logout</a>';
 
 // Get photo albums of Facebook page using Facebook Graph API
 $fields = "id,name,description,link,cover_photo,count";
@@ -57,8 +57,8 @@ foreach($fbAlbumData as $data){
 }
 //}
 if(isset($_GET['album_id']) && isset($_GET['album_id'])){
-  $album_id = $_GET['album_id'];
-  $album_name = $_GET['album_name']; //isset($_GET['album_name'])?:header('Location: fb-callback.php');
+    $album_id = $_GET['album_id'];
+    $album_name = $_GET['album_name']; //isset($_GET['album_name'])?:header('Location: fb-callback.php');
 }
 
 
@@ -70,16 +70,16 @@ $fbPhotoObj = json_decode($jsonData, true, 512, JSON_BIGINT_AS_STRING);
 // Facebook photos content
 $fbPhotoData = $fbPhotoObj['data'];
 
-echo "<h2>".$album_name."</h2>";
+echo "<h2>" . $album_name . "</h2>";
 
 // Render all photos   
 if (is_array($fbPhotoData) || is_object($fbPhotoData))
 {  
-    foreach($fbPhotoData as $data)
+    foreach ($fbPhotoData as $data)
     {
         $imageData = end($data['images']);
-        $imgSource = isset($imageData['source'])?$imageData['source']:'';
-        $name = isset($data['name'])?$data['name']:'';
+        $imgSource = isset($imageData['source']) ? $imageData['source'] : '';
+        $name = isset($data['name']) ? $data['name'] : '';
 
         echo "<div class='item'>";
         echo "<img src='{$imgSource}' alt=''>";
@@ -96,10 +96,10 @@ echo "<div class='slideshow-container'>";
 // Render all photos 
     if (is_array($fbPhotoData) || is_object($fbPhotoData))
     {   
-        foreach($fbPhotoData as $data){
+        foreach ($fbPhotoData as $data) {
         $imageData = end($data['images']);
-        $imgSource = isset($imageData['source'])?$imageData['source']:'';
-        $name = isset($data['name'])?$data['name']:'';
+        $imgSource = isset($imageData['source']) ? $imageData['source'] : '';
+        $name = isset($data['name']) ? $data['name'] : '';
 
         echo "<div class='mySlides fade'>";
         echo "<img src='{$imgSource}' alt='' style='width:100%'>";
@@ -113,13 +113,13 @@ echo "<div class='slideshow-container'>";
 
   <div style="text-align:center">
   <?php
-  if (is_array($fbPhotoData) || is_object($fbPhotoData))
-  { 
+    if (is_array($fbPhotoData) || is_object($fbPhotoData))
+    { 
     foreach($fbPhotoData as $data){
-      echo "<span class='dot'></span>";
-   }
-  }
-  ?>
+        echo "<span class='dot'></span>";
+    }
+    }
+    ?>
   </div>
 
 </div>
