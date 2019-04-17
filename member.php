@@ -44,7 +44,6 @@ foreach($fbAlbumData as $data){
     
     $pictureLink = "fb-callback.php?album_id={$id}&album_name={$name}";
     
-
     echo "<a href='{$pictureLink}'>";
     $cover_photo_id = (!empty($cover_photo_id ))?$cover_photo_id : 123456;
     echo "<img width=100px height=100px src='https://graph.facebook.com/v3.2/{$cover_photo_id}/picture?access_token={$accessToken}' alt=''>";
@@ -57,9 +56,11 @@ foreach($fbAlbumData as $data){
     echo "<p>{$description}</p>";
 }
 //}
+if(isset($_GET['album_id']) && isset($_GET['album_id'])){
+  $album_id = $_GET['album_id'];
+  $album_name = $_GET['album_name']; //isset($_GET['album_name'])?:header('Location: fb-callback.php');
+}
 
-$album_id = $_GET['album_id'];
-$album_name = $_GET['album_name']; //isset($_GET['album_name'])?:header('Location: fb-callback.php');
 
 // Get photos of Facebook page album using Facebook Graph API
 $graphPhoLink = "https://graph.facebook.com/v3.2/{$album_id}/photos?fields=source,images,name&access_token={$accessToken}";
