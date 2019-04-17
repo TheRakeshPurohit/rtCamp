@@ -115,36 +115,3 @@ foreach($fbAlbumData as $data){
     echo "<p>{$description}</p>";
     echo "</div>";
 }
-
-if(isset($_GET['album_id']) && isset($_GET['album_name'])){
-  $album_id = $_GET['album_id'];
-  $album_name = $_GET['album_name']; //isset($_GET['album_name'])?:header('Location: fb-callback.php');
-
-// Get photos of Facebook page album using Facebook Graph API
-$graphPhoLink = "https://graph.facebook.com/v3.2/{$album_id}/photos?fields=source,images,name&access_token={$accessToken}";
-$jsonData = file_get_contents($graphPhoLink);
-$fbPhotoObj = json_decode($jsonData, true, 512, JSON_BIGINT_AS_STRING);
-
-// Facebook photos content
-$fbPhotoData = $fbPhotoObj['data'];
-
-echo "<h2>".$album_name."</h2>";
-
-echo "<div class='slideshow-container'>";
-
-// Render all photos 
-    if (is_array($fbPhotoData) || is_object($fbPhotoData))
-    {   
-        foreach($fbPhotoData as $data){
-        $imageData = end($data['images']);
-        $imgSource = isset($imageData['source'])?$imageData['source']:'';
-        $name = isset($data['name'])?$data['name']:'';
-
-        echo "<div class='mySlides fade'>";
-        echo "<img src='{$imgSource}' alt='' style='width:100%'>";
-        echo "<div class='text'>{$name}</div>";
-        echo "</div>";
-      }
-    }
-}
-?>

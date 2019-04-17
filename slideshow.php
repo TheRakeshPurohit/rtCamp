@@ -9,10 +9,10 @@
 <?php
 require_once 'appconfig.php';
 
-//if(isset($_SESSION['fb_access_token'])){
+if(isset($_SESSION['fb_access_token'])){
     // Get access token from session
-  //  $accessToken = (string) $_SESSION['fb_access_token'];
-//}else{
+    $accessToken = (string) $_SESSION['fb_access_token'];
+}else{
     $graphActLink = "https://graph.facebook.com/oauth/access_token?client_id={$appId}&client_secret={$appSecret}&grant_type=client_credentials";
     
     // Retrieve access token
@@ -40,38 +40,24 @@ echo "<h2>" . $album_name . "</h2>";
 echo '<div class="slideshow-container">';
 
 // Render all photos
+if (/*is_array($fbPhotoData) || is_object($fbPhotoData)*/ $fbPhotoData!=null)
+    {
 foreach($fbPhotoData as $data){
     $imageData = end($data['images']);
     $imgSource = isset($imageData['source'])?$imageData['source']:'';
     $name = isset($data['name'])?$data['name']:'';
     
-    echo "<div class='myslides fade'>";
-    echo "<img src='{$imgSource}' alt='' style='width:100%'>";
-    echo "<h3>{$name}</h3>";
-    echo "</div>";
-}
-echo '</div> <br />';
-echo '<div style="text-align:center">';
-foreach($fbPhotoData as $data){
-  echo '<span class="dot"></span>';
+    echo '<div class="mySlides fade">';
+    echo '<img src="$imgSource" style="width:100%">';
+    echo '<div class="text"> {$name}</div>';
+    echo '</div>';
+    echo '</div> <br />';
+    echo '<div style="text-align:center">';
+    echo '<span class="dot"></span>';
+  }
 }
 echo '</div>';
-
-/* // Render all photos
-if (is_array($fbPhotoData) || is_object($fbPhotoData))
-    {  
-    foreach($fbPhotoData as $data){
-        $imageData = end($data['images']);
-        $imgSource = isset($imageData['source'])?$imageData['source']:'';
-        $name = isset($data['name'])?$data['name']:'';
-
-        echo '<div class="mySlides fade">';
-        echo '<img src="{$imgSource}" alt="" style="width:100%">';
-        echo '<div class="text">{$name}</div>';
-        echo '</div>';
-      }
-      echo '</div>';
-    } */
+}
 }
 ?>
 </body>
