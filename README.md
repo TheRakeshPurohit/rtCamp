@@ -33,7 +33,7 @@ path to config file
  ### Values To Be Change To Get The Application Running
    **Only To Be Changed When Not To Be Deployed Locally.**
 ```    
- $config['base_url'] = 'http://localhost/rtCamp/'; 
+ $CallbackUrl = 'http://localhost/rtCamp/'; 
  ```
  **Values To Be Configured To Use Your Own App.**
 ```

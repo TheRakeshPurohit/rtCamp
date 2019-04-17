@@ -2,10 +2,7 @@
 if(!session_id()) {
   session_start();
 }
-require_once 'lib\Facebook\autoload.php';
-
-  $appId='362540437809242';
-  $appSecret='538cd04f971479ff14dc409df2fbcf3b';
+require_once 'appconfig.php';
 
 $fb = new Facebook\Facebook([
   'app_id' => $appId, // variable with My Facebook App ID
@@ -41,8 +38,8 @@ if (! isset($accessToken)) {
   exit;
 }
 // Logged in
-//echo '<h3>Access Token</h3>';
-//($accessToken->getValue());
+echo '<h3>Access Token</h3>';
+var_dump($accessToken->getValue());
 // The OAuth 2.0 client handler helps us manage access tokens
 $oAuth2Client = $fb->getOAuth2Client();
 // Get the access token metadata from /debug_token
@@ -50,7 +47,7 @@ $tokenMetadata = $oAuth2Client->debugToken($accessToken);
 echo '<h3>Facebook Photos Challenge</h3>';
 //var_dump($tokenMetadata);
 // Validation (these will throw FacebookSDKException's when they fail)
-$tokenMetadata->validateAppId('362540437809242'); // My Facebook App ID
+$tokenMetadata->validateAppId($appId); // My Facebook App ID
 // If you know the user ID this access token belongs to, you can validate it here
 //$tokenMetadata->validateUserId('123');
 $tokenMetadata->validateExpiration();
@@ -66,7 +63,7 @@ if (! $accessToken->isLongLived()) {
   var_dump($accessToken->getValue());
 }
 
-$_SESSION['fb_access_token'] = (string) $accessToken;
+//$_SESSION['fb_access_token'] = (string) $accessToken;
 try {
   // Returns a `Facebook\FacebookResponse` object
   $response = $fb->get('/me?fields=id,name', $accessToken);
@@ -83,19 +80,10 @@ echo 'ID: ' . $user['id'] ;
 echo '<br/ >Welcome, ' . $user['name'];
 echo '<a href="logout.php" > Logout </a>';
 
-// Generate graph access token
-$graphActLink = "https://graph.facebook.com/oauth/access_token?client_id={$appId}&client_secret={$appSecret}&grant_type=client_credentials";
-    
-// Retrieve access token
-$accessTokenJson = file_get_contents($graphActLink);
-$accessTokenObj = json_decode($accessTokenJson);
-$access_token = $accessTokenObj->access_token;
-
-
 // Get photo albums of Facebook page using Facebook Graph API
 $fields = "id,name,description,link,cover_photo,count";
 $fb_page_id = $user['id'];
-$graphAlbLink = "https://graph.facebook.com/v3.2/{$fb_page_id}/albums?fields={$fields}&access_token={$access_token}";
+$graphAlbLink = "https://graph.facebook.com/v3.2/{$fb_page_id}/albums?fields={$fields}&access_token={$accessToken}";
 
 $jsonData = file_get_contents($graphAlbLink);
 $fbAlbumObj = json_decode($jsonData, true, 512, JSON_BIGINT_AS_STRING);
@@ -113,9 +101,8 @@ foreach($fbAlbumData as $data){
     $cover_photo_id = isset($data['cover_photo']['id'])?$data['cover_photo']['id']:'';
     $count = isset($data['count'])?$data['count']:'';
     
-    $pictureLink = "fb-callback.php?album_id={$id}&album_name={$name}";
-    
-
+    $pictureLink = "slideshow.php?album_id={$id}&album_name={$name}";
+    echo 'a';
     echo "<a href='{$pictureLink}'>";
     $cover_photo_id = (!empty($cover_photo_id ))?$cover_photo_id : 123456;
     echo "<img width=100px height=100px src='https://graph.facebook.com/v3.2/{$cover_photo_id}/picture?access_token={$accessToken}' alt=''>";
@@ -126,5 +113,38 @@ foreach($fbAlbumData as $data){
     
     echo "<p><span style='color:#888;'>{$photoCount} / <a href='{$link}' target='_blank'>View on Facebook</a></span></p>";
     echo "<p>{$description}</p>";
+    echo "</div>";
+}
+
+if(isset($_GET['album_id']) && isset($_GET['album_name'])){
+  $album_id = $_GET['album_id'];
+  $album_name = $_GET['album_name']; //isset($_GET['album_name'])?:header('Location: fb-callback.php');
+
+// Get photos of Facebook page album using Facebook Graph API
+$graphPhoLink = "https://graph.facebook.com/v3.2/{$album_id}/photos?fields=source,images,name&access_token={$accessToken}";
+$jsonData = file_get_contents($graphPhoLink);
+$fbPhotoObj = json_decode($jsonData, true, 512, JSON_BIGINT_AS_STRING);
+
+// Facebook photos content
+$fbPhotoData = $fbPhotoObj['data'];
+
+echo "<h2>".$album_name."</h2>";
+
+echo "<div class='slideshow-container'>";
+
+// Render all photos 
+    if (is_array($fbPhotoData) || is_object($fbPhotoData))
+    {   
+        foreach($fbPhotoData as $data){
+        $imageData = end($data['images']);
+        $imgSource = isset($imageData['source'])?$imageData['source']:'';
+        $name = isset($data['name'])?$data['name']:'';
+
+        echo "<div class='mySlides fade'>";
+        echo "<img src='{$imgSource}' alt='' style='width:100%'>";
+        echo "<div class='text'>{$name}</div>";
+        echo "</div>";
+      }
+    }
 }
 ?>
