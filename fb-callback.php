@@ -102,7 +102,6 @@ foreach($fbAlbumData as $data){
     $count = isset($data['count'])?$data['count']:'';
     
     $pictureLink = "slideshow.php?album_id={$id}&album_name={$name}";
-    echo 'a';
     echo "<a href='{$pictureLink}'>";
     $cover_photo_id = (!empty($cover_photo_id ))?$cover_photo_id : 123456;
     echo "<img width=100px height=100px src='https://graph.facebook.com/v3.2/{$cover_photo_id}/picture?access_token={$accessToken}' alt=''>";

@@ -3,7 +3,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Slide Show of Album</title>
 <link rel="stylesheet" type="text/css" href="lib/CSS/slider.css">
-<script type="text/javascript" src="lib/JavaScript/slider.js"></script>  
 </head>
 <body>
 <?php
@@ -24,7 +23,7 @@ if(isset($_SESSION['fb_access_token'])){
     $_SESSION['fb_access_token'] = $accessToken;
 
 if(isset($_GET['album_id']) && isset($_GET['album_name'])){
-  $album_id = $_GET['album_id'];
+  $album_id =  isset($_GET['album_id'])?$_GET['album_id']:header("Location: fb-callback.php");
   $album_name = $_GET['album_name']; //isset($_GET['album_name'])?:header('Location: fb-callback.php');
 
 // Get photos of Facebook page album using Facebook Graph API
@@ -40,7 +39,7 @@ echo "<h2>" . $album_name . "</h2>";
 echo '<div class="slideshow-container">';
 
 // Render all photos
-if (/*is_array($fbPhotoData) || is_object($fbPhotoData)*/ $fbPhotoData!=null)
+if (is_array($fbPhotoData) || is_object($fbPhotoData) && $fbPhotoData!=null)
     {
 foreach($fbPhotoData as $data){
     $imageData = end($data['images']);
@@ -48,17 +47,22 @@ foreach($fbPhotoData as $data){
     $name = isset($data['name'])?$data['name']:'';
     
     echo '<div class="mySlides fade">';
-    echo '<img src="$imgSource" style="width:100%">';
-    echo '<div class="text"> {$name}</div>';
+    echo "<img src='{$imgSource}' alt='' style='width:90%;height:80%' />";
+    echo '<div class="text">' . $name . '</div>';
     echo '</div>';
-    echo '</div> <br />';
-    echo '<div style="text-align:center">';
-    echo '<span class="dot"></span>';
-  }
 }
+
 echo '</div>';
+echo '<br/>';
+echo '<div style="text-align:center">';
+  foreach($fbPhotoData as $data){
+      echo '<span class="dot"></span>';
+    }
+    echo '</div>';
+}
 }
 }
 ?>
+<script type="text/javascript" src="lib/JavaScript/slider.js"></script>
 </body>
 </html>
