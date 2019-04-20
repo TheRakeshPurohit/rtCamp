@@ -6,14 +6,15 @@
 </head>
 <body>
 <?php
+  session_start();
 require_once 'appconfig.php';
+require_once 'fb-callback.php';
 
 if(isset($_SESSION['fb_access_token'])){
-    // Get access token from session
-    $accessToken = (string) $_SESSION['fb_access_token'];
-}else{
-    $graphActLink = "https://graph.facebook.com/oauth/access_token?client_id={$appId}&client_secret={$appSecret}&grant_type=client_credentials";
-    
+
+  $accessToken = (string) $_SESSION['fb_access_token'];
+}
+  $graphActLink = "https://graph.facebook.com/oauth/access_token?client_id={$appId}&client_secret={$appSecret}&grant_type=client_credentials";
     // Retrieve access token
     $accessTokenJson = file_get_contents($graphActLink);
     $accessTokenObj = json_decode($accessTokenJson);
@@ -23,8 +24,8 @@ if(isset($_SESSION['fb_access_token'])){
     $_SESSION['fb_access_token'] = $accessToken;
 
 if(isset($_GET['album_id']) && isset($_GET['album_name'])){
-  $album_id =  isset($_GET['album_id'])?$_GET['album_id']:header("Location: fb-callback.php");
-  $album_name = $_GET['album_name']; //isset($_GET['album_name'])?:header('Location: fb-callback.php');
+  $album_id =  $_GET['album_id'];
+  $album_name = $_GET['album_name'];
 
 // Get photos of Facebook page album using Facebook Graph API
 $graphPhoLink = "https://graph.facebook.com/v3.2/{$album_id}/photos?fields=source,images,name&access_token={$accessToken}";
@@ -34,7 +35,8 @@ $fbPhotoObj = json_decode($jsonData, true, 512, JSON_BIGINT_AS_STRING);
 // Facebook photos content
 $fbPhotoData = $fbPhotoObj['data'];
 
-echo "<h2>" . $album_name . "</h2>";
+if(empty($fbPhotoData)){}else{echo "<h2>" . $album_name . "</h2>";}
+
 
 echo '<div class="slideshow-container">';
 
@@ -59,9 +61,11 @@ echo '<div style="text-align:center">';
       echo '<span class="dot"></span>';
     }
     echo '</div>';
+}else{
+  echo "We care for your privacy. Only public photos will be displayed !";
 }
 }
-}
+//}
 ?>
 <script type="text/javascript" src="lib/JavaScript/slider.js"></script>
 </body>

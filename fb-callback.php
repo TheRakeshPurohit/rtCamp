@@ -1,7 +1,12 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>All Albums | Facebook | Download, SlideShow & Backup to Google Drive</title>
+<link rel="stylesheet" type="text/css" href="lib/CSS/slider.css">
+</head>
+<body>
 <?php
-if(!session_id()) {
-  session_start();
-}
+    session_start(); 
 require_once 'appconfig.php';
 
 $fb = new Facebook\Facebook([
@@ -24,7 +29,7 @@ try {
   echo 'Facebook SDK returned an error: ' . $e->getMessage();
   exit;
 }
-if (! isset($accessToken)) {
+if (!isset($accessToken)) {
   if ($helper->getError()) {
     header('HTTP/1.0 401 Unauthorized');
     echo "Error: " . $helper->getError() . "\n";
@@ -33,7 +38,7 @@ if (! isset($accessToken)) {
     echo "Error Description: " . $helper->getErrorDescription() . "\n";
   } else {
     header('HTTP/1.0 400 Bad Request');
-    echo 'Bad request';
+    echo 'Bad request hihihih';
   }
   exit;
 }
@@ -45,7 +50,7 @@ $oAuth2Client = $fb->getOAuth2Client();
 // Get the access token metadata from /debug_token
 $tokenMetadata = $oAuth2Client->debugToken($accessToken);
 echo '<h3>Facebook Photos Challenge</h3>';
-//var_dump($tokenMetadata);
+var_dump($tokenMetadata);
 // Validation (these will throw FacebookSDKException's when they fail)
 $tokenMetadata->validateAppId($appId); // My Facebook App ID
 // If you know the user ID this access token belongs to, you can validate it here
@@ -63,54 +68,11 @@ if (! $accessToken->isLongLived()) {
   var_dump($accessToken->getValue());
 }
 
-//$_SESSION['fb_access_token'] = (string) $accessToken;
-try {
-  // Returns a `Facebook\FacebookResponse` object
-  $response = $fb->get('/me?fields=id,name', $accessToken);
-} catch(Facebook\Exceptions\FacebookResponseException $e) {
-  echo 'Graph returned an error: ' . $e->getMessage();
-  exit;
-} catch(Facebook\Exceptions\FacebookSDKException $e) {
-  echo 'Facebook SDK returned an error: ' . $e->getMessage();
-  exit;
-}
-$user = $response->getGraphUser();
+$_SESSION['fb_access_token'] = (string) $accessToken;
 
-echo 'ID: ' . $user['id'] ;
-echo '<br/ >Welcome, ' . $user['name'];
-echo '<a href="logout.php" > Logout </a>';
+//echo $_SESSION['fb_access_token'];
 
-// Get photo albums of Facebook page using Facebook Graph API
-$fields = "id,name,description,link,cover_photo,count";
-$fb_page_id = $user['id'];
-$graphAlbLink = "https://graph.facebook.com/v3.2/{$fb_page_id}/albums?fields={$fields}&access_token={$accessToken}";
-
-$jsonData = file_get_contents($graphAlbLink);
-$fbAlbumObj = json_decode($jsonData, true, 512, JSON_BIGINT_AS_STRING);
-
-// Facebook albums content
-$fbAlbumData = $fbAlbumObj['data'];
-
-// Render all photo albums
-echo "<br/><br/>";
-foreach($fbAlbumData as $data){
-    $id = isset($data['id'])?$data['id']:'';
-    $name = isset($data['name'])?$data['name']:'';
-    $description = isset($data['description'])?$data['description']:'';
-    $link = isset($data['link'])?$data['link']:'';
-    $cover_photo_id = isset($data['cover_photo']['id'])?$data['cover_photo']['id']:'';
-    $count = isset($data['count'])?$data['count']:'';
-    
-    $pictureLink = "slideshow.php?album_id={$id}&album_name={$name}";
-    echo "<a href='{$pictureLink}'>";
-    $cover_photo_id = (!empty($cover_photo_id ))?$cover_photo_id : 123456;
-    echo "<img width=100px height=100px src='https://graph.facebook.com/v3.2/{$cover_photo_id}/picture?access_token={$accessToken}' alt=''>";
-    echo "</a>";
-    echo "<p>{$name}</p>";
-
-    $photoCount = ($count > 1)?$count. 'Photos':$count. 'Photo';
-    
-    echo "<p><span style='color:#888;'>{$photoCount} / <a href='{$link}' target='_blank'>View on Facebook</a></span></p>";
-    echo "<p>{$description}</p>";
-    echo "</div>";
-}
+header('Location: member.php');
+?>
+</body>
+</html>
