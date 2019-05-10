@@ -6,10 +6,23 @@
 </head>
 <body>
 <?php
+session_start();
 require_once 'appconfig.php';
-require_once 'fb-callback.php';
-if(isset($_SESSION['fb_access_token'])){
+require_once 'functions.php';
+$fb = new Facebook\Facebook([
+  'app_id' => $appId, // variable with Facebook App ID
+  'app_secret' => $appSecret,
+  'default_graph_version' => 'v3.2',
+  ]);
+$helper = $fb->getRedirectLoginHelper();
+
+if(isset($_GET['state'])){
+  $helper->getPersistentDataHandler()->set('state',$_GET['state']);
+}
+
+if(isset($_SESSION['fb_access_token'])){ 
     try {
+        $accessToken = $_SESSION['fb_access_token'];
         // Returns a `Facebook\FacebookResponse` object
         $response = $fb->get('/me?fields=id,name', $accessToken);
       } catch(Facebook\Exceptions\FacebookResponseException $e) {
@@ -55,16 +68,16 @@ if(isset($_SESSION['fb_access_token'])){
           echo "<p>{$name}</p>";
           echo "</a>";
           //echo "$images";
-          echo "<a href='{$photos}'> <button type='button'> Download Album </Button> </a>";
-      
+          
           $photoCount = ($count > 1)?$count. 'Photos':$count. 'Photo';
           
           echo "<p><span style='color:#888;'>{$photoCount} / <a href='{$link}' target='_blank'>View on Facebook</a></span></p>";
           echo "<p>{$description}</p>";
+          echo "<a href='#'> <button onClick='CreateZip()' class='button3' type='button'> Download Album </Button> </a>";
           echo "</div>";
       }
 }else{
-    header('Location: index.php');
+  header("Location: index.php");
 }
 ?>
 </body>

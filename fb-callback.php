@@ -6,18 +6,14 @@
 </head>
 <body>
 <?php
-    session_start(); 
+session_start();
 require_once 'appconfig.php';
-
 $fb = new Facebook\Facebook([
-  'app_id' => $appId, // variable with My Facebook App ID
+  'app_id' => $appId, // variable with Facebook App ID
   'app_secret' => $appSecret,
   'default_graph_version' => 'v3.2',
   ]);
 $helper = $fb->getRedirectLoginHelper();
-if(isset($_GET['state'])){
-  $helper->getPersistentDataHandler()->set('state',$_GET['state']);
-}
 try {
   $accessToken = $helper->getAccessToken();
 } catch(Facebook\Exceptions\FacebookResponseException $e) {
@@ -69,8 +65,6 @@ if (! $accessToken->isLongLived()) {
 }
 
 $_SESSION['fb_access_token'] = (string) $accessToken;
-
-//echo $_SESSION['fb_access_token'];
 
 header('Location: member.php');
 ?>

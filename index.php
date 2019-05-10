@@ -1,15 +1,13 @@
 <?php
 session_start();
-  require_once 'appconfig.php';
+require_once 'appconfig.php';
 
-  $fb = new Facebook\Facebook([
-    'app_id' => $appId,
-    'app_secret' => $appSecret,
-    'default_graph_version' => 'v3.2',
-    ]);
-  
-  $helper = $fb->getRedirectLoginHelper();
-  
+$fb = new Facebook\Facebook([
+  'app_id' => $appId, // variable with Facebook App ID
+  'app_secret' => $appSecret,
+  'default_graph_version' => 'v3.2',
+  ]);
+ $helper = $fb->getRedirectLoginHelper();  
   $permissions = ['email','user_photos','user_videos','user_posts','user_link','user_status','user_link']; // Optional permissions
   $loginUrl = $helper->getLoginUrl($CallbackUrl,$permissions);
   

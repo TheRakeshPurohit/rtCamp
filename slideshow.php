@@ -6,14 +6,13 @@
 </head>
 <body>
 <?php
-  session_start();
+session_start();
 require_once 'appconfig.php';
-require_once 'fb-callback.php';
 
 if(isset($_SESSION['fb_access_token'])){
 
   $accessToken = (string) $_SESSION['fb_access_token'];
-}
+
   $graphActLink = "https://graph.facebook.com/oauth/access_token?client_id={$appId}&client_secret={$appSecret}&grant_type=client_credentials";
     // Retrieve access token
     $accessTokenJson = file_get_contents($graphActLink);
@@ -64,6 +63,9 @@ echo '<div style="text-align:center">';
 }else{
   echo "We care for your privacy. Only public photos will be displayed !";
 }
+}
+}else{
+  header("Location: index.php");
 }
 //}
 ?>
