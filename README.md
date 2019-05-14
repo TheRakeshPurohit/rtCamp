@@ -1,6 +1,7 @@
 # rtCamp [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://rakeshpurohit-rtcamp-fb-challenge.000webhostapp.com/)
 
-# Travis- CI https://api.travis-ci.org/TheRakeshPurohit/rtCamp.svg?branch=main
+# Travis- CI 
+[![Build Status](https://api.travis-ci.org/TheRakeshPurohit/rtCamp.svg?branch=master)](https://api.travis-ci.org/TheRakeshPurohit/rtCamp)
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png" alt="Facebook Logo" width="50px" height="50px">
 
