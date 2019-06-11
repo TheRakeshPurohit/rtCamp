@@ -22,9 +22,14 @@ session_start();
 	mkdir($album_download_directory, 0777);
 
 	function download_album($session, $album_download_directory, $album_id, $album_name) {
-		$request_album_photos = new FacebookRequest($session,'GET', '/'.$album_id.'/photos?fields=source');
-		$response_album_photos = $request_album_photos->execute();			
-		$album_photos = $response_album_photos->getGraphObject()->asArray();
+
+		$graphPhoLink = 
+$jsonData = 
+$fbPhotoObj = 
+
+		$request_album_photos = "https://graph.facebook.com/v3.3/{$album_id}/photos?fields=source,images,name&limit=100&access_token={$session}";
+		$response_album_photos = file_get_contents($request_album_photos);			
+		$album_photos = json_decode($response_album_photos, true, 512, JSON_BIGINT_AS_STRING);
 
 		$album_directory = $album_download_directory.$album_name;
 		if ( !file_exists( $album_directory ) ) {
@@ -61,11 +66,12 @@ session_start();
 		if ( $_GET['all_albums'] == 'all_albums' ) {
 
 			// graph api request for user data
-			$request_albums = new FacebookRequest($session, 'GET', '/me/albums?fields=id,name');
-			$response_albums = $request_albums->execute();
+			
+			$request_albums = "https://graph.facebook.com/v3.3/me/albums?fields=id,name&access_token={$session}";
+			$response_albums = file_get_contents($$request_albums);
 			
 			// get response
-			$albums = $response_albums->getGraphObject()->asArray();
+			$albums = json_decode($response_albums, true, 512, JSON_BIGINT_AS_STRING);
 
 			if ( !empty( $albums ) ) {
 				foreach ( $albums['data'] as $album ) {

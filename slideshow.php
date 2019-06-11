@@ -6,24 +6,14 @@
 </head>
 <body>
 <?php
-<<<<<<< HEAD
 session_start();
-=======
-    session_start();
->>>>>>> 85e358e0c342f50861ef32c55d7303292e8d8f01
 require_once 'appconfig.php';
 
 if(isset($_SESSION['fb_access_token'])){
 
-<<<<<<< HEAD
   $accessToken = (string) $_SESSION['fb_access_token'];
 
   $graphActLink = "https://graph.facebook.com/oauth/access_token?client_id={$appId}&client_secret={$appSecret}&grant_type=client_credentials";
-=======
-    $accessToken = (string) $_SESSION['fb_access_token'];
-}
-    $graphActLink = "https://graph.facebook.com/oauth/access_token?client_id={$appId}&client_secret={$appSecret}&grant_type=client_credentials";
->>>>>>> 85e358e0c342f50861ef32c55d7303292e8d8f01
     // Retrieve access token
     $accessTokenJson = file_get_contents($graphActLink);
     $accessTokenObj = json_decode($accessTokenJson);

@@ -20,14 +20,8 @@
         };
         var target = document.getElementById('loader');
 
-        //$('.fancybox').fancybox({
-        //    autoPlay: true
-        //});
-
         function append_download_link(url) {
             var spinner = new Spinner(opts).spin(target);
-
-            //$('loader').after(new Spinner(opts).spin().el);
 
             $.ajax({
                 url:url,
@@ -60,8 +54,6 @@
         $(".single-download").on("click", function() {
             var rel = $(this).attr("rel");
             var album = rel.split(",");
-            
-            alert("single album downloading");
 
             append_download_link("functions.php?zip=1&single_album="+album[0]+","+album[1]);
         });

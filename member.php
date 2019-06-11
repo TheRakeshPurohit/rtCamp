@@ -105,11 +105,11 @@ if(isset($_SESSION['fb_access_token'])){
 						<div class="modal fade" id="download-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
-									<div class="modal-header">
+										<h4 class="modal-title" id="myModalLabel">Album(s)</h4>
+										<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal">
 											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 										</button>
-										<h4 class="modal-title" id="myModalLabel">Albums Report</h4>
 									</div>
 									<div class="modal-body" id="display-response">
 										<!-- Response is displayed over here -->
@@ -124,9 +124,6 @@ if(isset($_SESSION['fb_access_token'])){
 					<div class="row">
         
 <?php
-      echo '<br/ >Welcome, ' . $user['name'] . ' ';
-     // echo '<a href="logout.php" >Logout</a>';
-      
       // Get photo albums of Facebook page using Facebook Graph API
       $fields = "id,name,description,link,cover_photo,count,images";
       
