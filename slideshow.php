@@ -27,7 +27,7 @@ if(isset($_GET['album_id']) && isset($_GET['album_name'])){
   $album_name = $_GET['album_name'];
 
 // Get photos of Facebook page album using Facebook Graph API
-$graphPhoLink = "https://graph.facebook.com/v3.2/{$album_id}/photos?fields=source,images,name&access_token={$accessToken}";
+$graphPhoLink = "https://graph.facebook.com/v3.3/{$album_id}/photos?fields=source,images,name&access_token={$accessToken}";
 $jsonData = file_get_contents($graphPhoLink);
 $fbPhotoObj = json_decode($jsonData, true, 512, JSON_BIGINT_AS_STRING);
 
@@ -35,7 +35,6 @@ $fbPhotoObj = json_decode($jsonData, true, 512, JSON_BIGINT_AS_STRING);
 $fbPhotoData = $fbPhotoObj['data'];
 
 if(empty($fbPhotoData)){}else{echo "<h2>" . $album_name . "</h2>";}
-
 
 echo '<div class="slideshow-container">';
 
