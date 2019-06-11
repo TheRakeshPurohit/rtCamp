@@ -9,22 +9,11 @@
 session_start();
 require_once 'appconfig.php';
 $fb = new Facebook\Facebook([
-<<<<<<< HEAD
   'app_id' => $appId, // variable with Facebook App ID
   'app_secret' => $appSecret,
   'default_graph_version' => 'v3.3',
   ]);
 $helper = $fb->getRedirectLoginHelper();
-=======
-    'app_id' => $appId, // variable with My Facebook App ID
-    'app_secret' => $appSecret,
-    'default_graph_version' => 'v3.2',
-    ]);
-$helper = $fb->getRedirectLoginHelper();
-if(isset($_GET['state'])){
-    $helper->getPersistentDataHandler()->set('state',$_GET['state']);
-}
->>>>>>> 85e358e0c342f50861ef32c55d7303292e8d8f01
 try {
     $accessToken = $helper->getAccessToken();
 } catch(Facebook\Exceptions\FacebookResponseException $e) {
