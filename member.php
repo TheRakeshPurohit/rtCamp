@@ -121,7 +121,6 @@ if(isset($_SESSION['fb_access_token'])){
 							</div>
 						</div>
 					</div>
-
 					<div class="row">
         
 <?php
