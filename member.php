@@ -17,14 +17,14 @@
 require_once 'appconfig.php';
 require_once 'functions.php';
 $fb = new Facebook\Facebook([
-  'app_id' => $appId, // variable with Facebook App ID
-  'app_secret' => $appSecret,
-  'default_graph_version' => 'v3.3',
-  ]);
+    'app_id' => $appId, // variable with Facebook App ID
+    'app_secret' => $appSecret,
+    'default_graph_version' => 'v3.3',
+    ]);
 $helper = $fb->getRedirectLoginHelper();
 
 if(isset($_GET['state'])){
-  $helper->getPersistentDataHandler()->set('state',$_GET['state']);
+    $helper->getPersistentDataHandler()->set('state',$_GET['state']);
 }
 
 if(isset($_SESSION['fb_access_token'])){ 
@@ -32,17 +32,17 @@ if(isset($_SESSION['fb_access_token'])){
         $accessToken = $_SESSION['fb_access_token'];
         // Returns a `Facebook\FacebookResponse` object
         $response = $fb->get('/me?fields=id,name', $accessToken);
-      } catch(Facebook\Exceptions\FacebookResponseException $e) {
+        } catch(Facebook\Exceptions\FacebookResponseException $e) {
         echo 'Graph returned an error: ' . $e->getMessage();
         exit;
-      } catch(Facebook\Exceptions\FacebookSDKException $e) {
+        } catch(Facebook\Exceptions\FacebookSDKException $e) {
         echo 'Facebook SDK returned an error: ' . $e->getMessage();
         exit;
-      }
-      $user = $response->getGraphUser();
+        }
+        $user = $response->getGraphUser();
       
-      $userid = $user['id'];
-      ?>
+        $userid = $user['id'];
+        ?>
       <nav class="navbar bg-dark navbar-dark fixed-top" role="navigation">
 
 					<div class="container">
@@ -124,41 +124,41 @@ if(isset($_SESSION['fb_access_token'])){
 					<div class="row">
         
 <?php
-      // Get photo albums of Facebook page using Facebook Graph API
-      $fields = "id,name,description,link,cover_photo,count,images";
+        // Get photo albums of Facebook page using Facebook Graph API
+        $fields = "id,name,description,link,cover_photo,count,images";
       
-      $graphAlbLink = "https://graph.facebook.com/v3.3/{$userid}/albums?fields={$fields}&access_token={$accessToken}";
-      $jsonData = file_get_contents($graphAlbLink);
-      $fbAlbumObj = json_decode($jsonData, true, 512, JSON_BIGINT_AS_STRING);
+        $graphAlbLink = "https://graph.facebook.com/v3.3/{$userid}/albums?fields={$fields}&access_token={$accessToken}";
+        $jsonData = file_get_contents($graphAlbLink);
+        $fbAlbumObj = json_decode($jsonData, true, 512, JSON_BIGINT_AS_STRING);
       
-      // Facebook albums content
-      $fbAlbumData = $fbAlbumObj['data'];
+        // Facebook albums content
+        $fbAlbumData = $fbAlbumObj['data'];
       
-      // Render all photo albums
-      echo "<br/><br/>";
-      foreach($fbAlbumData as $data){
-          $id = isset($data['id'])?$data['id']:'';
-          $name = isset($data['name'])?$data['name']:'';
-          $description = isset($data['description'])?$data['description']:'';
-          $link = isset($data['link'])?$data['link']:'';
-          $photos = "https://graph.facebook.com/v3.3/{$id}/photos?access_token={$accessToken}";
-          $cover_photo_id = isset($data['cover_photo']['id'])?$data['cover_photo']['id']:'';
-          $count = isset($data['count'])?$data['count']:'';
+        // Render all photo albums
+        echo "<br/><br/>";
+        foreach($fbAlbumData as $data){
+            $id = isset($data['id'])?$data['id']:'';
+            $name = isset($data['name'])?$data['name']:'';
+            $description = isset($data['description'])?$data['description']:'';
+            $link = isset($data['link'])?$data['link']:'';
+            $photos = "https://graph.facebook.com/v3.3/{$id}/photos?access_token={$accessToken}";
+            $cover_photo_id = isset($data['cover_photo']['id'])?$data['cover_photo']['id']:'';
+            $count = isset($data['count'])?$data['count']:'';
           
-          $pictureLink = "slideshow.php?album_id={$id}&album_name={$name}";
-          echo "<div class='carding'>";
-          echo "<a href='{$pictureLink}'>";
-          $cover_photo_id = (!empty($cover_photo_id))?$cover_photo_id : 123456;
-          echo "<img width=200px height=200px src='https://graph.facebook.com/v3.3/{$cover_photo_id}/picture?access_token={$accessToken}' alt=''>";
-          echo "<p>{$name}</p>";
-          echo "</a>";
-          //echo "$images";
+            $pictureLink = "slideshow.php?album_id={$id}&album_name={$name}";
+            echo "<div class='carding'>";
+            echo "<a href='{$pictureLink}'>";
+            $cover_photo_id = (!empty($cover_photo_id))?$cover_photo_id : 123456;
+            echo "<img width=200px height=200px src='https://graph.facebook.com/v3.3/{$cover_photo_id}/picture?access_token={$accessToken}' alt=''>";
+            echo "<p>{$name}</p>";
+            echo "</a>";
+            //echo "$images";
           
-          $photoCount = ($count > 1)?$count. 'Photos':$count. 'Photo';
+            $photoCount = ($count > 1)?$count. 'Photos':$count. 'Photo';
           
-          echo "<p><span style='color:#888;'>{$photoCount} / <a href='{$link}' target='_blank'>View on Facebook</a></span></p>";
-          echo "<p>{$description}</p>";
-          ?><div class="caption">
+            echo "<p><span style='color:#888;'>{$photoCount} / <a href='{$link}' target='_blank'>View on Facebook</a></span></p>";
+            echo "<p>{$description}</p>";
+            ?><div class="caption">
 															<button rel="<?php echo $id.','.$name;?>" class="single-download btn btn-primary pull-left" title="Download Album">
 																<span class="fas fa-download" ></span>
 															</button>
@@ -174,11 +174,11 @@ if(isset($_SESSION['fb_access_token'])){
           echo "</form>"; -->
           <?php echo "</div>";
         
-      }
-      ?>
+        }
+        ?>
       </div>
 <?php }else{
-  header("Location: index.php");
+    header("Location: index.php");
 }
 ?>
 <script src="lib/resources/js/spin.min.js"></script>
