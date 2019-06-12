@@ -23,19 +23,19 @@ $fb = new Facebook\Facebook([
     ]);
 $helper = $fb->getRedirectLoginHelper();
 
-if(isset($_GET['state'])){
-    $helper->getPersistentDataHandler()->set('state',$_GET['state']);
+if (isset($_GET['state'])) {
+    $helper->getPersistentDataHandler()->set('state', $_GET['state']);
 }
 
-if(isset($_SESSION['fb_access_token'])){ 
+if (isset($_SESSION['fb_access_token'])) { 
     try {
         $accessToken = $_SESSION['fb_access_token'];
         // Returns a `Facebook\FacebookResponse` object
         $response = $fb->get('/me?fields=id,name', $accessToken);
-        } catch(Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (Facebook\Exceptions\FacebookResponseException $e) {
         echo 'Graph returned an error: ' . $e->getMessage();
         exit;
-        } catch(Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (Facebook\Exceptions\FacebookSDKException $e) {
         echo 'Facebook SDK returned an error: ' . $e->getMessage();
         exit;
         }
@@ -52,8 +52,8 @@ if(isset($_SESSION['fb_access_token'])){
 								<span class="navbar-toggler-icon"></span>
 							</button>
 							<a class="navbar-brand" href="#" id="username">
-								<img src="<?php echo 'https://graph.facebook.com/'.$userid.'/picture';?>" id="user_photo" class="img-circle" />
-								<span style="margin-left: 5px;"><?php echo $user['name'];?></span>
+								<img src="<?php echo 'https://graph.facebook.com/' . $userid . '/picture'; ?>" id="user_photo" class="img-circle" />
+								<span style="margin-left: 5px;"><?php echo $user['name']; ?></span>
 							</a>
 						</div>
 <!--//echo "<img src='https://graph.facebook.com/{$userid}/picture&access_token={$accessToken}' />"; -->
@@ -136,36 +136,36 @@ if(isset($_SESSION['fb_access_token'])){
       
         // Render all photo albums
         echo "<br/><br/>";
-        foreach($fbAlbumData as $data){
-            $id = isset($data['id'])?$data['id']:'';
-            $name = isset($data['name'])?$data['name']:'';
-            $description = isset($data['description'])?$data['description']:'';
-            $link = isset($data['link'])?$data['link']:'';
+        foreach ($fbAlbumData as $data) {
+            $id = isset($data['id']) ? $data['id'] : '';
+            $name = isset($data['name']) ? $data['name'] : '';
+            $description = isset($data['description']) ? $data['description'] : '';
+            $link = isset($data['link']) ? $data['link'] : '';
             $photos = "https://graph.facebook.com/v3.3/{$id}/photos?access_token={$accessToken}";
-            $cover_photo_id = isset($data['cover_photo']['id'])?$data['cover_photo']['id']:'';
-            $count = isset($data['count'])?$data['count']:'';
+            $cover_photo_id = isset($data['cover_photo']['id']) ? $data['cover_photo']['id'] : '';
+            $count = isset($data['count']) ? $data['count'] : '';
           
             $pictureLink = "slideshow.php?album_id={$id}&album_name={$name}";
             echo "<div class='carding'>";
             echo "<a href='{$pictureLink}'>";
-            $cover_photo_id = (!empty($cover_photo_id))?$cover_photo_id : 123456;
+            $cover_photo_id = (!empty($cover_photo_id)) ? $cover_photo_id : 123456;
             echo "<img width=200px height=200px src='https://graph.facebook.com/v3.3/{$cover_photo_id}/picture?access_token={$accessToken}' alt=''>";
             echo "<p>{$name}</p>";
             echo "</a>";
             //echo "$images";
           
-            $photoCount = ($count > 1)?$count. 'Photos':$count. 'Photo';
+            $photoCount = ($count > 1) ? $count . 'Photos' : $count . 'Photo';
           
             echo "<p><span style='color:#888;'>{$photoCount} / <a href='{$link}' target='_blank'>View on Facebook</a></span></p>";
             echo "<p>{$description}</p>";
             ?><div class="caption">
-															<button rel="<?php echo $id.','.$name;?>" class="single-download btn btn-primary pull-left" title="Download Album">
+															<button rel="<?php echo $id . ',' . $name; ?>" class="single-download btn btn-primary pull-left" title="Download Album">
 																<span class="fas fa-download" ></span>
 															</button>
 
-															<input type="checkbox" class="select-album" value="<?php echo $id.','.$name;?>" />
+															<input type="checkbox" class="select-album" value="<?php echo $id . ',' . $name; ?>" />
 
-															<span rel="<?php echo $id.','.$name;?>" class="move-single-album btn btn-danger pull-right" title="Move to Google">
+															<span rel="<?php echo $id . ',' . $name; ?>" class="move-single-album btn btn-danger pull-right" title="Move to Google">
                               <span class="fas fa-file-export"></span>
 															</span>
 														</div>
@@ -177,7 +177,7 @@ if(isset($_SESSION['fb_access_token'])){
         }
         ?>
       </div>
-<?php }else{
+<?php } else {
     header("Location: index.php");
 }
 ?>
