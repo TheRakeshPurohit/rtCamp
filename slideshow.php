@@ -9,9 +9,9 @@
 session_start();
 require_once 'appconfig.php';
 
-if(isset($_SESSION['fb_access_token'])){
+if (isset($_SESSION['fb_access_token'])) {
 
-    $accessToken = (string) $_SESSION['fb_access_token'];
+    $accessToken = (string)$_SESSION['fb_access_token'];
 
     $graphActLink = "https://graph.facebook.com/oauth/access_token?client_id={$appId}&client_secret={$appSecret}&grant_type=client_credentials";
     // Retrieve access token
@@ -55,15 +55,15 @@ foreach ($fbPhotoData as $data) {
 echo '</div>';
 echo '<br/>';
 echo '<div style="text-align:center">';
-    foreach($fbPhotoData as $data){
+    foreach ($fbPhotoData as $data) {
         echo '<span class="dot"></span>';
     }
     echo '</div>';
-}else{
+} else {
     echo "We care for your privacy. Only public photos will be displayed !";
 }
 }
-}else{
+} else {
     header("Location: index.php");
 }
 //}
