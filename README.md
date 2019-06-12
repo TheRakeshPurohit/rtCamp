@@ -2,6 +2,8 @@
 
 # Travis- CI [![Build Status](https://api.travis-ci.org/TheRakeshPurohit/rtCamp.svg?branch=master)](https://api.travis-ci.org/TheRakeshPurohit/rtCamp)
 
+# Scrutinizer [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/TheRakeshPurohit/rtCamp/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/TheRakeshPurohit/rtCamp/?branch=master)
+
 <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png" alt="Facebook Logo" width="50px" height="50px">
 
  ### [Demo Link](https://rakeshpurohit-rtcamp-fb-challenge.000webhostapp.com/)
