@@ -8,15 +8,10 @@
 <?php
 session_start();
 require_once 'appconfig.php';
-if(isset($_GET['state'])){
     $helper->getPersistentDataHandler()->set('state',$_GET['state']);
-  }
+
 if(isset($_SESSION['fb_access_token'])){
 
-  $accessToken = (string) $_SESSION['fb_access_token'];
-
-  $graphActLink = "https://graph.facebook.com/oauth/access_token?client_id={$appId}&client_secret={$appSecret}&grant_type=client_credentials";
-    // Retrieve access token
     $accessTokenJson = file_get_contents($graphActLink);
     $accessTokenObj = json_decode($accessTokenJson);
     $accessToken = $accessTokenObj->access_token;
@@ -24,8 +19,8 @@ if(isset($_SESSION['fb_access_token'])){
     // Store access token in session
     $_SESSION['fb_access_token'] = $accessToken;
 
-if(isset($_GET['album_id']) && isset($_GET['album_name'])){
-    $album_id =  $_GET['album_id'];
+if (isset($_GET['album_id']) && isset($_GET['album_name'])) {
+    $album_id = $_GET['album_id'];
     $album_name = $_GET['album_name'];
 
 // Get photos of Facebook page album using Facebook Graph API
@@ -57,16 +52,16 @@ foreach ($fbPhotoData as $data) {
 echo '</div>';
 echo '<br/>';
 echo '<div style="text-align:center">';
-    foreach($fbPhotoData as $data){
+    foreach ($fbPhotoData as $data) {
         echo '<span class="dot"></span>';
     }
     echo '</div>';
-}else{
+} else {
     echo "We care for your privacy. Only public photos will be displayed !";
 }
 }
-}else{
-  header("Location: index.php");
+} else {
+    header("Location: index.php");
 }
 //}
 ?>

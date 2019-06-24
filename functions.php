@@ -18,11 +18,11 @@ ini_set('max_execution_time', 300);
 
     $session = $_SESSION['fb_access_token'];
 
-	$zip_folder = "";
-	$album_download_directory = 'lib/resources/albums/'.uniqid().'/';
-	mkdir($album_download_directory, 0777);
+    $zip_folder = "";
+    $album_download_directory = 'lib/resources/albums/' . uniqid() . '/';
+    mkdir($album_download_directory, 0777);
 
-	function download_album($session, $album_download_directory, $album_id, $album_name) {
+    function download_album($session, $album_download_directory, $album_id, $album_name) {
 
 		$request_album_photos = "https://graph.facebook.com/v3.3/{$album_id}/photos?fields=source,images,name&limit=500&access_token={$session}";
 		$response_album_photos = file_get_contents($request_album_photos);			
@@ -44,51 +44,51 @@ ini_set('max_execution_time', 300);
 	//---------- For 1 album download -------------------------------------------------//
 	if ( isset( $_GET['single_album'] ) && !empty ( $_GET['single_album'] ) ) {
         
-		$single_album = explode( ",", $_GET['single_album'] );
-		download_album( $session, $album_download_directory, $single_album[0], $single_album[1] );
-	}
+        $single_album = explode(",", $_GET['single_album']);
+        download_album($session, $album_download_directory, $single_album[0], $single_album[1]);
+    }
 	
-	//---------- For Selected Albums download -----------------------------------------//
-	if ( isset( $_GET['selected_albums'] ) and count( $_GET['selected_albums'] ) > 0) {
-		$selected_albums = explode("/", $_GET['selected_albums']);
+    //---------- For Selected Albums download -----------------------------------------//
+    if (isset($_GET['selected_albums']) and count($_GET['selected_albums']) > 0) {
+        $selected_albums = explode("/", $_GET['selected_albums']);
 
-		foreach ( $selected_albums as $selected_album ) {
-			$selected_album = explode( ",", $selected_album );
-			download_album( $session, $album_download_directory, $selected_album[0], $selected_album[1] );
-		}
-	}
+        foreach ($selected_albums as $selected_album) {
+            $selected_album = explode(",", $selected_album);
+            download_album($session, $album_download_directory, $selected_album[0], $selected_album[1]);
+        }
+    }
 
-	//---------- Download all album code -------------------------------------------------//
-	if ( isset( $_GET['all_albums'] ) && !empty ( $_GET['all_albums'] ) ) {
-		if ( $_GET['all_albums'] == 'all_albums' ) {
+    //---------- Download all album code -------------------------------------------------//
+    if (isset($_GET['all_albums']) && !empty ($_GET['all_albums'])) {
+        if ($_GET['all_albums'] == 'all_albums') {
 
-			// graph api request for user data
+            // graph api request for user data
 			
 			$request_albums = "https://graph.facebook.com/v3.3/me/albums?fields=id,name&access_token={$session}";
 			$response_albums = file_get_contents($request_albums);
 			
-			// get response
-			$albums = json_decode($response_albums, true, 512, JSON_BIGINT_AS_STRING);
+            // get response
+            $albums = json_decode($response_albums, true, 512, JSON_BIGINT_AS_STRING);
 
-			if ( !empty( $albums ) ) {
-				foreach ( $albums['data'] as $album ) {
-					$album = (array) $album;
-					download_album( $session, $album_download_directory, $album['id'], $album['name'] );
-				}
-			}
-		}
-	}
+            if (!empty($albums)) {
+                foreach ($albums['data'] as $album) {
+                    $album = (array)$album;
+                    download_album($session, $album_download_directory, $album['id'], $album['name']);
+                }
+            }
+        }
+    }
 
-	if ( isset( $_GET['zip'] ) ) {
-		require_once('zipper.php');
-		$zipper = new zipper();
-		echo $zipper->get_zip($album_download_directory);
+    if (isset($_GET['zip'])) {
+        require_once('zipper.php');
+        $zipper = new zipper();
+        echo $zipper->get_zip($album_download_directory);
 
-	} else {
+    } else {
 
-		//$redirect = 'location:lib/move_to_picasa.php?album_download_directory='.$album_download_directory;
-		//if ( isset( $_GET['ajax'] ) ) {
-		//	$redirect = $redirect . '&ajax=1';
-		//}
-		//($redirect);
-	}
+        //$redirect = 'location:lib/move_to_picasa.php?album_download_directory='.$album_download_directory;
+        //if ( isset( $_GET['ajax'] ) ) {
+        //	$redirect = $redirect . '&ajax=1';
+        //}
+        //($redirect);
+    }
