@@ -8,7 +8,9 @@
 <?php
 session_start();
 require_once 'appconfig.php';
-
+if(isset($_GET['state'])){
+    $helper->getPersistentDataHandler()->set('state',$_GET['state']);
+  }
 if(isset($_SESSION['fb_access_token'])){
 
   $accessToken = (string) $_SESSION['fb_access_token'];

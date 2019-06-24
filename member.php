@@ -1,7 +1,8 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Bootstrap CSS -->
+
+<!-- Bootstrap and other CSSs -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="shortcut icon" type="image/jpg" href="lib/resources/img/favicon.jpg"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
@@ -56,45 +57,40 @@ if(isset($_SESSION['fb_access_token'])){
 								<span style="margin-left: 5px;"><?php echo $user['name'];?></span>
 							</a>
 						</div>
-<!--//echo "<img src='https://graph.facebook.com/{$userid}/picture&access_token={$accessToken}' />"; -->
+
       <div id="navbar-collapse-menu" class="collapse navbar-collapse menu-links">
-							<ul class="nav navbar-nav pull-right">
-								<li>
+							<hr />
 									<a href="#" id="download-all-albums" class="center">
-										<span class="btn btn-primary col-md-12">
+										<span class="btn btn-primary">
 											Download All
 										</span>
 									</a>
-								</li>
-								<li>
+							
 									<a href="#" id="download-selected-albums" class="center">
-										<span class="btn btn-warning col-md-12">
+										<span class="btn btn-warning">
 											Download Selected
 										</span>
 									</a>
-								</li>
-								<li>
+								
 									<a href="#" id="move_all" class="center">
-										<span class="btn btn-success col-md-12">
+										<span class="btn btn-success">
 											Move All
 										</span>
 									</a>
-								</li>
-								<li>
+								
 									<a href="#" id="move-selected-albums" class="center">
-										<span class="btn btn-info col-md-12">
+										<span class="btn btn-info">
 											Move Selected
 										</span>
 									</a>
-								</li>
-								<li>
+								
 									<a href="logout.php" class="center">
-										<span class="btn btn-danger col-md-12">
+										<span class="btn btn-danger">
 											Logout
 										</span>
 									</a>
 								</li>
-							</ul>
+							
 						</div>
             </div>
 				</nav>
@@ -147,7 +143,7 @@ if(isset($_SESSION['fb_access_token'])){
           
           $pictureLink = "slideshow.php?album_id={$id}&album_name={$name}";
           echo "<div class='carding'>";
-          echo "<a href='{$pictureLink}'>";
+          echo "<a target='_blank' href='{$pictureLink}'>";
           $cover_photo_id = (!empty($cover_photo_id))?$cover_photo_id : 123456;
           echo "<img width=200px height=200px src='https://graph.facebook.com/v3.3/{$cover_photo_id}/picture?access_token={$accessToken}' alt=''>";
           echo "<p>{$name}</p>";
@@ -158,20 +154,18 @@ if(isset($_SESSION['fb_access_token'])){
           
           echo "<p><span style='color:#888;'>{$photoCount} / <a href='{$link}' target='_blank'>View on Facebook</a></span></p>";
           echo "<p>{$description}</p>";
-          ?><div class="caption">
-															<button rel="<?php echo $id.','.$name;?>" class="single-download btn btn-primary pull-left" title="Download Album">
-																<span class="fas fa-download" ></span>
-															</button>
+          ?>
+		<div class="caption">
+		  
+			<button rel="<?php echo $id.','.$name;?>" class="single-download btn btn-primary pull-left" title="Download Album">
+				<span class="fas fa-download" ></span>
+			</button>
 
-															<input type="checkbox" class="select-album" value="<?php echo $id.','.$name;?>" />
-
-															<span rel="<?php echo $id.','.$name;?>" class="move-single-album btn btn-danger pull-right" title="Move to Google">
-                              <span class="fas fa-file-export"></span>
-															</span>
-														</div>
-          <!--echo "<form action='' method='POST'>";
-          echo "<button id='{$id}' onClick='on_CreateZip(this.id)' class='button3' type='button'> Download Album </Button>";
-          echo "</form>"; -->
+			<input type="checkbox" class="select-album" value="<?php echo $id.','.$name;?>" />
+			<span rel="<?php echo $id.','.$name;?>" class="move-single-album btn btn-danger pull-right" title="Move to Google">
+            	<span class="fas fa-file-export"></span>
+			</span>
+		</div>
           <?php echo "</div>";
         
       }

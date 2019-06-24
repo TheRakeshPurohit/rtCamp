@@ -1,5 +1,6 @@
 <?php
 session_start();
+ini_set('max_execution_time', 300);
 	require_once 'appconfig.php';
 
 		use Facebook\GraphNodes\GraphObject;
@@ -23,11 +24,7 @@ session_start();
 
 	function download_album($session, $album_download_directory, $album_id, $album_name) {
 
-		$graphPhoLink = 
-$jsonData = 
-$fbPhotoObj = 
-
-		$request_album_photos = "https://graph.facebook.com/v3.3/{$album_id}/photos?fields=source,images,name&limit=100&access_token={$session}";
+		$request_album_photos = "https://graph.facebook.com/v3.3/{$album_id}/photos?fields=source,images,name&limit=500&access_token={$session}";
 		$response_album_photos = file_get_contents($request_album_photos);			
 		$album_photos = json_decode($response_album_photos, true, 512, JSON_BIGINT_AS_STRING);
 
@@ -35,7 +32,7 @@ $fbPhotoObj =
 		if ( !file_exists( $album_directory ) ) {
 			mkdir($album_directory, 0777);
 		}
-
+		
 		$i = 1;
 		foreach ( $album_photos['data'] as $album_photo ) {
 			$album_photo = (array) $album_photo;
@@ -68,7 +65,7 @@ $fbPhotoObj =
 			// graph api request for user data
 			
 			$request_albums = "https://graph.facebook.com/v3.3/me/albums?fields=id,name&access_token={$session}";
-			$response_albums = file_get_contents($$request_albums);
+			$response_albums = file_get_contents($request_albums);
 			
 			// get response
 			$albums = json_decode($response_albums, true, 512, JSON_BIGINT_AS_STRING);
