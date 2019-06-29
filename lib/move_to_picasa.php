@@ -11,7 +11,7 @@ if ( isset( $_GET['album_download_directory'] ) ) {
 	header('location:../index.php');
 }
 
-require_once 'Zend/Loader.php';
+require_once 'Zend/autooad.php';
 Zend_Loader::loadClass('Zend_Gdata_Photos');
 //Zend_Loader::loadClass('Zend_Gdata_ClientLogin');
 Zend_Loader::loadClass('Zend_Gdata_AuthSub');

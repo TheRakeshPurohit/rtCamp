@@ -2,7 +2,7 @@
 
 session_start();
 
-require_once 'Zend/Loader.php';
+require_once 'lib/Google/autoload.php';
 Zend_Loader::loadClass('Zend_Gdata_Photos');
 //Zend_Loader::loadClass('Zend_Gdata_ClientLogin');
 Zend_Loader::loadClass('Zend_Gdata_AuthSub');
