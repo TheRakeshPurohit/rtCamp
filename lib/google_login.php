@@ -21,7 +21,6 @@ if ( isset( $_GET['token'] ) ) {
 
 ?>
 
-
 <html>
 	<head>
 		<title>Facebook Album</title>
